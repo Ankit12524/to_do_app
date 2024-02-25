@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:to_do/screens/authenticate/login_screen.dart';
 import 'package:to_do/to_do.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
-void main() {
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,);
   runApp(const MyApp());
 }
 
@@ -32,7 +39,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: ToDoScreen(),
+      home: LoginScreen(),
     );
   }
 }

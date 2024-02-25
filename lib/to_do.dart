@@ -19,7 +19,7 @@ class ToDoScreen extends StatefulWidget {
   _ToDoScreenState createState() => _ToDoScreenState();
 }
 
-class _ToDoScreenState extends State<ToDoScreen> with SingleTickerProviderStateMixin {
+class _ToDoScreenState extends State<ToDoScreen> with TickerProviderStateMixin {
   late TabController _tabController;
 
   List<Map<String, List<String>>> tasksByCategory = [
@@ -59,6 +59,7 @@ class _ToDoScreenState extends State<ToDoScreen> with SingleTickerProviderStateM
       if (newCategory.isNotEmpty &&
           !tasksByCategory.any((category) => category.keys.first == newCategory)) {
         tasksByCategory.add({newCategory: [], 'Completed': []});
+        _tabController.dispose(); // Dispose old TabController
         _tabController = TabController(length: tasksByCategory.length, vsync: this);
         categoryController.clear();
       }
@@ -74,9 +75,7 @@ class _ToDoScreenState extends State<ToDoScreen> with SingleTickerProviderStateM
 
   void deleteTask(int index, String category) {
     setState(() {
-      if (tasksByCategory[_tabController.index]['Completed']!.isNotEmpty) {
-        tasksByCategory[_tabController.index]['Completed']!.removeAt(index);
-      }
+      tasksByCategory[_tabController.index]['Completed']!.removeAt(index);
     });
   }
 
@@ -106,7 +105,7 @@ class _ToDoScreenState extends State<ToDoScreen> with SingleTickerProviderStateM
                 ),
                 IconButton(
                   icon: Icon(Icons.add),
-                  onPressed: () => addTask(tasksByCategory[_tabController.index].keys.first),
+                  onPressed: () => addTask(tasksByCategory[_tabController.index].keys.first!),
                 ),
               ],
             ),
@@ -117,7 +116,7 @@ class _ToDoScreenState extends State<ToDoScreen> with SingleTickerProviderStateM
               children: tasksByCategory.map((category) {
                 String categoryName = category.keys.first;
                 List<String> tasks = category[categoryName]!;
-                List<String> completedTasks = category['Completed']!;
+                List<String> tasks_completed = category['Completed']!;
                 return Column(
                   children: [
                     Expanded(
@@ -135,14 +134,20 @@ class _ToDoScreenState extends State<ToDoScreen> with SingleTickerProviderStateM
                       ),
                     ),
                     Divider(),
+                    if (tasks_completed.length == 0)
+                       Expanded(
+                        child: Center(
+                          child: Text('No Completed Task',style: TextStyle(color: Theme.of(context).disabledColor),) ,),
+                      )
+
+                    else
                     Expanded(
-                      child: completedTasks.isNotEmpty
-                          ? ListView.builder(
-                        itemCount: completedTasks.length,
+                      child: ListView.builder(
+                        itemCount: tasksByCategory[_tabController.index]['Completed']!.length,
                         itemBuilder: (context, index) {
                           return ListTile(
                             title: Text(
-                              completedTasks[index],
+                              tasksByCategory[_tabController.index]['Completed']![index],
                               style: TextStyle(color: Colors.grey),
                             ),
                             trailing: IconButton(
@@ -151,12 +156,6 @@ class _ToDoScreenState extends State<ToDoScreen> with SingleTickerProviderStateM
                             ),
                           );
                         },
-                      )
-                          : Center(
-                        child: Text(
-                          'No completed tasks',
-                          style: TextStyle(color: Colors.grey),
-                        ),
                       ),
                     ),
                   ],
