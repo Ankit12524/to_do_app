@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "536092486173",
+    "firebase_url": "https://rakshak-money-mangager-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "rakshak-money-mangager",
+    "storage_bucket": "rakshak-money-mangager.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:536092486173:android:d19bcd956bd2973b4ab4f4",
+        "android_client_info": {
+          "package_name": "com.example.route_mapping"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBpNLhPEUYzItQ7CO8rdRgAvjnMuo_ZA8U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:536092486173:android:e6a8fbd189148cd84ab4f4",
+        "android_client_info": {
+          "package_name": "com.example.to_do"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBpNLhPEUYzItQ7CO8rdRgAvjnMuo_ZA8U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:536092486173:android:f5b14abd15b794f64ab4f4",
+        "android_client_info": {
+          "package_name": "com.rakshak.money_manager_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBpNLhPEUYzItQ7CO8rdRgAvjnMuo_ZA8U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
