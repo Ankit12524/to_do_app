@@ -1,4 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:to_do/services/auth_service.dart';
+import 'package:to_do/services/to_do_services.dart';
+import 'package:to_do/shared/msgs.dart';
+
 
 void main() {
   runApp(MyApp());
@@ -30,6 +35,8 @@ class _ToDoScreenState extends State<ToDoScreen> with TickerProviderStateMixin {
 
   TextEditingController taskController = TextEditingController();
   TextEditingController categoryController = TextEditingController();
+  CloudService _cloudService = CloudService();
+  AuthService _authService = AuthService();
 
   @override
   void initState() {
@@ -43,14 +50,22 @@ class _ToDoScreenState extends State<ToDoScreen> with TickerProviderStateMixin {
     super.dispose();
   }
 
-  void addTask(String category) {
-    setState(() {
-      String newTask = taskController.text;
-      if (newTask.isNotEmpty) {
-        tasksByCategory[_tabController.index][category]!.add(newTask);
-        taskController.clear();
-      }
-    });
+  void addTask(String category) async {
+    try {
+      setState(() async {
+        String newTaskDescription = taskController.text;
+        if (newTaskDescription.isNotEmpty) {
+          Task newTask = Task(id: DateTime.now().toString(),
+              task: newTaskDescription,
+              completed: false);
+          await _cloudService.addTask(newTask,categoryController.text);
+          tasksByCategory[_tabController.index][category]!.add(newTask.task);
+          taskController.clear();
+        }
+      });
+    } catch (error) {
+      ToastUtils.showErrorSnackbar(context, error.toString());
+    }
   }
 
   void addCategory() {
@@ -119,6 +134,7 @@ class _ToDoScreenState extends State<ToDoScreen> with TickerProviderStateMixin {
                 List<String> tasks_completed = category['Completed']!;
                 return Column(
                   children: [
+                    StreamBuilder(stream: _cloudService.getTasksStream(FirebaseAuth.instance.currentUser!.uid),builder: (context, snapshot) {for (final x in snapshot.data!) {print(x.task);};return Text('acs');},),
                     Expanded(
                       child: ListView.builder(
                         itemCount: tasks.length,

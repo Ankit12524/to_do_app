@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:to_do/screens/authenticate/login_screen.dart';
 import 'package:to_do/to_do.dart';
@@ -9,11 +10,14 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,);
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  MyApp({super.key});
+
+  FirebaseAuth _authService = FirebaseAuth.instance;
+
 
   // This widget is the root of your application.
   @override
@@ -39,7 +43,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: LoginScreen(),
+      home: _authService.currentUser!=null ? ToDoScreen() : LoginScreen(),
     );
   }
 }
